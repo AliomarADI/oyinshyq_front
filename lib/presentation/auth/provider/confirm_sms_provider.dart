@@ -21,7 +21,7 @@ class VerificationProvider extends BaseBloc {
   }
 
   void toRegisterCompany(BuildContext context, String? phone) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => IndexScreen()));
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (_) => IndexScreen()), (route) => false);
   }
 }

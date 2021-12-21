@@ -20,12 +20,14 @@ class HomeScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text("Главная"),
+              backgroundColor: AppColors.primaryColor,
               centerTitle: true,
             ),
             body: model.isLoading
                 ? LoadingView()
                 : Container(
                     padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.all(0),
                     child: GridView.builder(
                         physics: BouncingScrollPhysics(),
                         // shrinkWrap: true,
@@ -41,14 +43,27 @@ class HomeScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 Expanded(
-                                    child: Image.asset(
-                                        'assets/images/png/home_image.jpg')),
+                                    child: Image.asset(index == 1
+                                        ? 'assets/images/png/home_image.jpg'
+                                        : index % 3 == 0
+                                            ? "assets/images/png/toy1.jpg"
+                                            : index % 5 == 0
+                                                ? "assets/images/png/toy2.jpg"
+                                                : index % 7 == 0
+                                                    ? "assets/images/png/toy3.jpg"
+                                                    : index % 8 == 0
+                                                        ? "assets/images/png/toy4.jpg"
+                                                        : index % 9 == 0
+                                                            ? "assets/images/png/toy1.jpg"
+                                                            : "assets/images/png/toy6.jpg")),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Expanded(
                                   child: ListTile(
                                     title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(model.toys[index].name ??
                                             'Игрушка'),
@@ -57,11 +72,13 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         IconButton(
                                             onPressed: () {
-                                              indexProvider.addToLikedToys(
-                                                  model.toys[index]);
+                                              model.addToLikedToys(model.toys
+                                                  .indexOf(model.toys[index]));
                                               print('added');
                                             },
-                                            icon: Icon(Icons.add))
+                                            icon: model.likedToys[index]
+                                                ? Icon(Icons.check)
+                                                : Icon(Icons.add))
                                       ],
                                     ),
                                   ),
@@ -70,6 +87,14 @@ class HomeScreen extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                                 color: AppColors.systemWhiteColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: AppColors.primaryColor
+                                          .withOpacity(0.25),
+                                      offset: Offset(2, 3),
+                                      blurRadius: 1,
+                                      spreadRadius: 1)
+                                ],
                                 borderRadius: BorderRadius.circular(15)),
                           );
                         }),

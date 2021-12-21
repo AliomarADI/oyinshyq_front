@@ -13,6 +13,7 @@ class AppColors {
   static const Color systemWhiteColor = Color(0xffffffff);
   static const Color systemGreenColor = Color(0xff3BD79E);
   static const Color systemRedColor = Color(0xffF63535);
+  static const Color inactiveColor = Color(0xffafb2b5);
   static const Color profileInfoLinesColor = Color(0xffEFF2F7);
 
   ///[_Divider]

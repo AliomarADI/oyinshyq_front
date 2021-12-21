@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:oyinshyq/app/data/models/profile.dart';
+import 'package:oyinshyq/base/base_provider.dart';
+import 'package:oyinshyq/presentation/profile/provider/profile_provider.dart';
+import 'package:oyinshyq/presentation/profile/ui/change_profile.dart';
+import 'package:oyinshyq/presentation/profile/ui/payment.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -9,36 +13,42 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  var myUser = User(
-      imagePath: 'assets/images/png/maveric.jpg',
-      name: 'Didar',
-      phone: '+7 707 934 58 25',
-      about:
-          'Certified Personal Trainer and Nutritionist with years of experience in creating effective diets and training plans focused on achieving individual customers goals in a smooth way.');
+  // var myUser = User(
+  //     imagePath: 'assets/images/png/maveric.jpg',
+  //     name: 'Didar',
+  //     phone: '+7 707 934 58 25',
+  //     about:
+  //         'Certified Personal Trainer and Nutritionist with years of experience in creating effective diets and training plans focused on achieving individual customers goals in a smooth way.');
 
   @override
   Widget build(BuildContext context) {
-    final user = myUser;
+    // final user = myUser;
 
-    return Scaffold(
-      appBar: buildAppBar(context),
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        children: [
-          ProfileWidget(
-            imagePath: user.imagePath,
-            onClicked: () async {},
+    return BaseProvider<ProfileProvider>(
+      model: ProfileProvider(),
+      builder: (context, model, child) {
+        return Scaffold(
+          appBar: buildAppBar(context),
+          body: ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              ProfileWidget(
+                imagePath: model.user.imagePath!,
+                onClicked: () async {},
+              ),
+              const SizedBox(height: 24),
+              buildName(model.user),
+              const SizedBox(height: 24),
+              buildOtherInfo(model)
+            ],
           ),
-          const SizedBox(height: 24),
-          buildName(user),
-          const SizedBox(height: 24),
-          buildOtherInfo()
-        ],
-      ),
+        );
+      },
     );
   }
 
-  buildOtherInfo() {
+  buildOtherInfo(ProfileProvider model) {
+    final user = model.user;
     return Column(
       children: [
         ListTile(
@@ -52,25 +62,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         Divider(),
-        ListTile(
-          leading: Icon(
-            Icons.post_add,
-            size: 27,
-          ),
-          title: Text(
-            'Пункты выдачи заказов',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        GestureDetector(
+          onTap: () {},
+          child: ListTile(
+            leading: Icon(
+              Icons.post_add,
+              size: 27,
+            ),
+            title: Text(
+              'Пункты выдачи заказов',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
           ),
         ),
         Divider(),
-        ListTile(
-          leading: Icon(
-            Icons.post_add,
-            size: 27,
-          ),
-          title: Text(
-            'Способы оплаты',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Payment()));
+          },
+          child: ListTile(
+            leading: Icon(
+              Icons.post_add,
+              size: 27,
+            ),
+            title: Text(
+              'Способы оплаты',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
           ),
         ),
         Divider(),
@@ -128,6 +147,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),
+        Divider(),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChangeProfile(
+                          img: user.imagePath,
+                          name: user.name,
+                          phone: user.phone,
+                          about: user.about,
+                          profileProvider: model,
+                        )));
+          },
+          child: ListTile(
+            leading: Icon(
+              Icons.post_add,
+              size: 27,
+            ),
+            title: Text(
+              'Изменить профиль',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -135,12 +179,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildName(User user) => Column(
         children: [
           Text(
-            user.name,
+            user.name!,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           const SizedBox(height: 4),
           Text(
-            user.phone,
+            user.phone!,
             style: TextStyle(color: Colors.grey),
           )
         ],

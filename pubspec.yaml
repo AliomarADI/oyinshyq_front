@@ -46,7 +46,7 @@ dependencies:
   connectivity_plus: ^1.1.0
   # search bar
   anim_search_bar: ^2.0.2
-
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   build_runner:

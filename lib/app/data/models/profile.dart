@@ -1,13 +1,13 @@
 class User {
-  final String imagePath;
-  final String name;
-  final String phone;
-  final String about;
+  String? imagePath;
+  String? name;
+  String? phone;
+  String? about;
 
-  const User({
-    required this.imagePath,
-    required this.name,
-    required this.phone,
-    required this.about,
+  User({
+    this.imagePath,
+    this.name,
+    this.phone,
+    this.about,
   });
 }
